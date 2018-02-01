@@ -12,7 +12,9 @@ namespace mik2artist {
             if(String.IsNullOrEmpty(dir) || !Directory.Exists(dir))
                 throw new ArgumentException();
 
-            foreach(var path in Directory.GetFiles(dir, "*.mp3", SearchOption.AllDirectories)) {
+            foreach(var path in Directory.GetFiles(dir, "*.mp3", SearchOption.TopDirectoryOnly)) {
+                File.Copy(path, path + ".bak", true);
+
                 using(var file = TagLib.File.Create(path)) {
                     var id3v2 = file.GetTag(TagLib.TagTypes.Id3v2) as Tag;
 
